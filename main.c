@@ -3,8 +3,6 @@
 #include <string.h>
 #include <math.h>
 
-// TODO: Move input into pre-switch statement, pass it to each statement
-//       Same with output
 
 char * getInput() {
     char* buffer = malloc(sizeof(char) * 256);
@@ -13,10 +11,8 @@ char * getInput() {
     return buffer;
 }
 
-void decimalToBinary() {
-    char* input = getInput(); 
+void decimalToBinary(char* input) {
     int num = atoi(input);
-    free(input);
     
     int i = 0, ans[50];
     while (num > 0) {
@@ -33,8 +29,7 @@ void decimalToBinary() {
 
 }
 
-void binaryToDecimal() {
-    char* input = getInput();
+void binaryToDecimal(char* input) {
 
     int ans = 0;
     for (int i = 0; input[i] != '\0'; i++) {
@@ -48,14 +43,10 @@ void binaryToDecimal() {
     }
 
     printf("%d\n", ans);
-    free(input);
 }
 
-void decimalToOctal() {
-    char* input = getInput();
+void decimalToOctal(char* input) {
     int num = atoi(input);
-    free(input);
-
     int mod, i = 0;
     char ans[50];
     while (num != 0) {
@@ -71,8 +62,7 @@ void decimalToOctal() {
     printf("\n");
 }
 
-void octalToDecimal() {
-    char* input = getInput();
+void octalToDecimal(char* input) {
     int len = strlen(input)-1;
     int ans = 0;
 
@@ -86,8 +76,7 @@ void octalToDecimal() {
 
 }
 
-void hexToBinary() {
-    char* input = getInput();
+void hexToBinary(char* input) {
     long decimal = strtol(input, NULL, 16);
 
     int i = 0, ans[50];
@@ -104,9 +93,7 @@ void hexToBinary() {
     printf("\n");
 }
 
-void binaryToHex() {
-    char* input = getInput();
-
+void binaryToHex(char* input) {
     int ans = 0;
     for (int i = 0; input[i] != '\0'; i++) {
         if (input[i] == '1') {
@@ -119,7 +106,6 @@ void binaryToHex() {
     }
 
     printf("%x\n", ans);
-    free(input);
 }
 
 int main() {
@@ -135,31 +121,32 @@ int main() {
     printf("Choice: ");
     scanf("%d", &choice);
 
-
+    char* input = getInput();
     switch(choice) {
         case 1:
-            decimalToBinary();
+            decimalToBinary(input);
             break;
         case 2:
-            binaryToDecimal();
+            binaryToDecimal(input);
             break;
         case 3:
-            decimalToOctal();
+            decimalToOctal(input);
             break;
         case 4:
-            octalToDecimal();
+            octalToDecimal(input);
             break;
         case 5:
-            hexToBinary();
+            hexToBinary(input);
             break;
         case 6:
-            binaryToHex();
+            binaryToHex(input);
             break;
         default:
             printf("Error: Invalid Choice\n");
             break;
     }
 
+    free(input);
     return 0;
 }
 
