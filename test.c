@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 int main() {
-    char num[]="3076";
-    long n = strtol(num, NULL, 16);
-    printf("n=%ld\n", n);  // prints 12406
+    int test = 100;
+
+    printf("%o\n", test);
 
     return 0;
 }

@@ -1,36 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #include <math.h>
+#include <string.h>
 
-
-char * getInput() {
-    char* buffer = malloc(sizeof(char) * 256);
-    printf("Input: ");
-    scanf("%s", buffer);
-    return buffer;
-}
-
-void decimalToBinary(char* input) {
-    int num = atoi(input);
-    
-    int i = 0, ans[50];
-    while (num > 0) {
-        ans[i] = num % 2;
-        i++;
-        num /= 2;
-    }
-
-    printf("Output: ");
-    for (int j = i - 1; j >= 0; j--) {
-        printf("%d", ans[j]);
-    }
-    printf("\n");
-
-}
-
-void binaryToDecimal(char* input) {
-
+int binaryToDecimal(char* input) {
     int ans = 0;
     for (int i = 0; input[i] != '\0'; i++) {
         if (input[i] == '1') {
@@ -40,29 +13,11 @@ void binaryToDecimal(char* input) {
         } else {
             continue;
         }
-    }
-
-    printf("%d\n", ans);
+    } 
+    return ans;
 }
 
-void decimalToOctal(char* input) {
-    int num = atoi(input);
-    int mod, i = 0;
-    char ans[50];
-    while (num != 0) {
-        mod = num % 8;
-        num /= 8;
-        ans[i] = mod + '0';
-        i++;
-    }
-
-    for (int j = strlen(ans)-1; j >= 0; j--) {
-        printf("%c", ans[j]);
-    }
-    printf("\n");
-}
-
-void octalToDecimal(char* input) {
+int octalToDecimal(char* input) {
     int len = strlen(input)-1;
     int ans = 0;
 
@@ -71,82 +26,80 @@ void octalToDecimal(char* input) {
         add = (input[i] - '0') * pow(8, len-i);
         ans = ans + add;
     }
-
-    printf("%d\n", ans);
-
+    return ans;
 }
 
-void hexToBinary(char* input) {
-    long decimal = strtol(input, NULL, 16);
-
-    int i = 0, ans[50];
-    while (decimal > 0) {
-        ans[i] = decimal % 2;
+int* decimalToBinary(char* input) {
+    int num = atoi(input);
+    int i = 0;
+    int* ans = (int*)malloc(50 * sizeof(int));
+    while (num > 0) {
+        ans[i] = num % 2;
         i++;
-        decimal /= 2;
+        num /= 2;
     }
 
-    printf("Output: ");
-    for (int j = i - 1; j >= 0; j--) {
-        printf("%d", ans[j]);
-    }
-    printf("\n");
+    return ans;
 }
 
-void binaryToHex(char* input) {
-    int ans = 0;
-    for (int i = 0; input[i] != '\0'; i++) {
-        if (input[i] == '1') {
-            ans = ans * 2 + 1;
-        } else if (input[i] == '0') {
-            ans = ans * 2;
-        } else {
-            continue;
-        }
-    }
 
-    printf("%x\n", ans);
-}
+int main(int argc, char *argv[]) {
+    if (argc != 4) {
+        printf("Error\n");
+    } 
 
-int main() {
-    printf("Number Converter:\n");
-    printf("(1) Decimal to Binary\n");
-    printf("(2) Binary to Decimal\n");
-    printf("(3) Decimal to Octal\n");
-    printf("(4) Octal to Decimal\n");
-    printf("(5) Hexadecimal to Binary\n");
-    printf("(6) Binary to Hexadecimal\n\n");
+    // ./new -inputFlag *input* -outputFlag
+    char* inputFlag = argv[1];
+    char* input = argv[2];
+    char* outputFlag = argv[3];
 
-    int choice;
-    printf("Choice: ");
-    scanf("%d", &choice);
-
-    char* input = getInput();
-    switch(choice) {
-        case 1:
-            decimalToBinary(input);
+    int outputDecimal = 0;
+    switch(inputFlag[1]) {
+        case 'd':
+            outputDecimal = atoi(input);
             break;
-        case 2:
-            binaryToDecimal(input);
+        case 'b':
+            outputDecimal = binaryToDecimal(input);
             break;
-        case 3:
-            decimalToOctal(input);
+        case 'o':
+            outputDecimal = octalToDecimal(input);
             break;
-        case 4:
-            octalToDecimal(input);
-            break;
-        case 5:
-            hexToBinary(input);
-            break;
-        case 6:
-            binaryToHex(input);
+        case 'x':
+            outputDecimal = (int)strtol(input, NULL, 16);
             break;
         default:
-            printf("Error: Invalid Choice\n");
+            printf("Error: Invalid Input Flag\n");
             break;
     }
 
-    free(input);
+    printf("%d\n", outputDecimal);
+
+    switch(outputFlag[1]) {
+        case 'd':
+            printf("%d\n", outputDecimal);
+            break;
+        case 'b':
+            int i = 0, ans[50];
+            while (outputDecimal > 0) {
+                ans[i] = outputDecimal % 2;
+                i++;
+                outputDecimal = outputDecimal / 2;
+            }
+            for (int j = i - 1; j >= 0; j--) {
+                printf("%d", ans[j]);
+            }
+            printf("\n");
+            break;
+        case 'o':
+            printf("%o\n", outputDecimal);
+            break;
+        case 'x':
+            printf("%x\n", outputDecimal);
+            break;
+        default:
+            printf("Error: Invalid Output Flag \n");
+            break;
+    }
+
     return 0;
 }
-

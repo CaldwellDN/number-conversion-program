@@ -1,3 +1,5 @@
-*.o
+new.o
+main.o
+test.o
 test
 *.vscode
